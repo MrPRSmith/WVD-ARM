@@ -348,7 +348,7 @@
                             "apiVersion": "2018-10-01",
                             "type": "Microsoft.Compute/availabilitySets",
                             //"name": "[concat(variables('rdshPrefix'), 'availabilitySet-', parameters('vmLocation'))]",
-                            "name": "[concat('AVS-NE-PRD', variables('rdshPrefix'), '01')]",
+                            "name": "[concat('AVS-NE-PRD', variables('rdshPrefix'), '-01')]",
                             "location": "[parameters('vmLocation')]",
                             "tags": "[parameters('availabilitySetTags')]",
                             "properties": {
