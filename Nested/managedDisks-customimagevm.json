@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "artifactsLocation": {
@@ -205,28 +205,10 @@
         "existingDomainUsername": "[first(split(parameters('administratorAccountUsername'), '@'))]",
         "domain": "[if(equals(parameters('domain'), ''), last(split(parameters('administratorAccountUsername'), '@')), parameters('domain'))]",
         "storageAccountType": "[parameters('rdshVMDiskType')]",
-        "imageName": "[concat(parameters('rdshPrefix'), 'image')]",
         "newNsgName": "[concat(parameters('rdshPrefix'), 'nsg-', parameters('_guidValue'))]",
         "nsgId": "[if(parameters('createNetworkSecurityGroup'), resourceId('Microsoft.Network/networkSecurityGroups', variables('newNsgName')), parameters('networkSecurityGroupId'))]"
     },
     "resources": [
-        {
-            "type": "Microsoft.Compute/images",
-            "apiVersion": "2018-10-01",
-            "name": "[variables('imageName')]",
-            "location": "[parameters('location')]",
-            "tags": "[parameters('imageTags')]",
-            "properties": {
-                "storageProfile": {
-                    "osDisk": {
-                        "osType": "Windows",
-                        "osState": "Generalized",
-                        "blobUri": "[parameters('VmImageVhdUri')]",
-                        "storageAccountType": "[variables('storageAccountType')]"
-                    }
-                }
-            }
-        },
         {
             "apiVersion": "2018-05-01",
             "name": "NSG-linkedTemplate",
@@ -292,7 +274,6 @@
                 "count": "[parameters('rdshNumberOfInstances')]"
             },
             "dependsOn": [
-                "[variables('imageName')]",
                 "[concat('Microsoft.Network/networkInterfaces/', parameters('rdshPrefix'), add(copyindex(), parameters('vmInitialNumber')), '-nic')]"
             ],
             "properties": {
@@ -315,7 +296,7 @@
                         }
                     },
                     "imageReference": {
-                        "id": "[resourceId('Microsoft.Compute/images', variables('imageName'))]"
+                        "id": "[parameters('rdshImageSourceId')]"
                     }
                 },
                 "networkProfile": {
