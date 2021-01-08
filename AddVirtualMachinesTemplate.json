@@ -262,7 +262,7 @@
             "metadata": {
                 "description": "GUID for the deployment"
             },
-            "defaultValue": "[utcnow('yyyy-MM-dd THH-mm-ss zzzz')]"
+            "defaultValue": "[utcnow('yyyy-MM-dd-HH-mm-ss')]"
         },
         "apiVersion": {
             "type": "string",
