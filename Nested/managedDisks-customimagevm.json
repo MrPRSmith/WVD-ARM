@@ -291,7 +291,7 @@
                 "storageProfile": {
                     "osDisk": {
                         "createOption": "FromImage",
-                        "name": "[concat(parameters('rdshPrefix'), add(copyindex(), parameters('vmInitialNumber')),'OSDisk')]",
+                        "name": "[concat(parameters('rdshPrefix'), add(copyindex(), parameters('vmInitialNumber')),'_OSDisk')]",
                         "managedDisk": {
                             "storageAccountType": "[variables('storageAccountType')]"
                         }
@@ -366,6 +366,40 @@
                     }
                 }
             }
+        },
+        {
+            "apiVersion": "2018-10-01",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('rdshPrefix'), add(copyindex(), parameters('vmInitialNumber')), '/', 'IaaSAntimalware')]",
+            "location": "[parameters('location')]",
+            "dependsOn": ["rdsh-dsc-loop"],
+            "copy": {
+                "name": "rdsh-IaaSAntimalware-loop",
+                "count": "[parameters('rdshNumberOfInstances')]"
+            },
+            "properties": {
+                "publisher": "Microsoft.Azure.Security",
+                "type": "IaaSAntimalware",
+                "typeHandlerVersion": "1.3",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                  "AntimalwareEnabled": "true",
+                  "Exclusions": {
+                    "Extensions": ".log;.ldf",
+                    "Paths": "%ProgramFiles%\\FSLogix\\Apps\\frxdrv.sys; %ProgramFiles%\\FSLogix\\Apps\\frxdrvvt.sys; %ProgramFiles%\\FSLogix\\Apps\\frxccd.sys; %TEMP%\\*.VHD; %TEMP%\\*.VHDX; %Windir%\\TEMP\\*.VHD; %Windir%\\TEMP\\*.VHDX]",
+                    "Processes": "%ProgramFiles%\\FSLogix\\Apps\frxccd.exe; %ProgramFiles%\\FSLogix\\Apps\\frxccds.exe; %ProgramFiles%\\FSLogix\\Apps\frxsvc.exe"
+                  },
+        
+                  "RealtimeProtectionEnabled": "true",
+                  "ScheduledScanSettings": {
+                    "isEnabled": "true",
+                    "scanType": "Quick",
+                    "day": "7",
+                    "time": "120"
+                  }
+                },
+                "protectedSettings": null
+              }
         }
     ],
     "outputs": {}
