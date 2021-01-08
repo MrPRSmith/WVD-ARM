@@ -259,6 +259,7 @@
         },
         "deploymentId": {
             "type": "string",
+            "defaultValue": "[utcnow('yyyy-MM-dd THH-mm-ss zzzz')]",
             "metadata": {
                 "description": "GUID for the deployment"
             },
