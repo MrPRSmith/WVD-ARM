@@ -282,7 +282,7 @@
                 },
                 "availabilitySet": {
                     // "id": "[resourceId('Microsoft.Compute/availabilitySets/', concat(parameters('rdshPrefix'), 'availabilitySet-', parameters('location')))]"
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets/', concat('AVS-NE-PRD', parameters('rdshPrefix'), '-01'))]"
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets/', concat('AVS-NE-PRD-', parameters('rdshPrefix'), '-01'))]"
                 },
                 "osProfile": {
                     "computerName": "[concat(parameters('rdshPrefix'), add(copyindex(), parameters('vmInitialNumber')))]",
