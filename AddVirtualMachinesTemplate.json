@@ -258,12 +258,11 @@
             "defaultValue": {}
         },
         "deploymentId": {
-            "type": "string",
-            "defaultValue": "[utcnow('yyyy-MM-dd THH-mm-ss zzzz')]",
+            "type": "string",           
             "metadata": {
                 "description": "GUID for the deployment"
             },
-            "defaultValue": ""
+            "defaultValue": "[utcnow('yyyy-MM-dd THH-mm-ss zzzz')]"
         },
         "apiVersion": {
             "type": "string",
